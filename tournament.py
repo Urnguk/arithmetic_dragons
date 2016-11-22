@@ -13,25 +13,30 @@ def annoying_input_int(message =''):
     return answer
 
 
-def game_tournament(hero, dragon_list):
-    for dragon in dragon_list:
-        print('Вышел', dragon._color, 'дракон!')
-        while dragon.is_alive() and hero.is_alive():
-            print('Вопрос:', dragon.question())
+def game_tournament(hero, monster_list):
+    for monster in monster_list:
+        if monster.object==1:
+            inz = "дракон"
+        else:
+            inz = "тролль"
+        print('Вышел', monster._color, inz, "!")
+        while monster.is_alive() and hero.is_alive():
+            print('Вопрос:', monster.question())
             answer = annoying_input_int('Ответ:')
 
-            if dragon.check_answer(answer):
-                hero.attack(dragon)
-                print('Верно! \n** дракон кричит от боли **')
+            if monster.check_answer(answer):
+                hero.attack(monster)
+                print('Верно! \n**',inz, ' кричит от боли **')
             else:
-                dragon.attack(hero)
+                monster.attack(hero)
                 print('Ошибка! \n** вам нанесён удар... **')
-        if dragon.is_alive():
+        if monster.is_alive():
             break
-        print('Дракон', dragon._color, 'повержен!\n')
+        print(inz, monster._color, 'повержен!\n')
 
     if hero.is_alive():
         print('Поздравляем! Вы победили!')
+        hero._experience=hero._health
         print('Ваш накопленный опыт:', hero._experience)
     else:
         print('К сожалению, Вы проиграли...')
@@ -43,11 +48,11 @@ def start_game():
         print('Представьтесь, пожалуйста: ', end = '')
         hero = Hero(input())
 
-        dragon_number = 3
-        dragon_list = generate_dragon_list(dragon_number)
-        assert(len(dragon_list) == 3)
-        print('У Вас на пути', dragon_number, 'драконов!')
-        game_tournament(hero, dragon_list)
+        monster_number = 5
+        monster_list = generate_monster_list(monster_number)
+        assert(len(monster_list) == 5)
+        print('У Вас на пути', monster_number, 'монстров!')
+        game_tournament(hero, monster_list)
 
     except EOFError:
         print('Поток ввода закончился. Извините, принимать ответы более невозможно.')
